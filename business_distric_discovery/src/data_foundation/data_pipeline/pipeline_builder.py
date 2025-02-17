@@ -29,7 +29,9 @@ class PipelineBuilder:
         self.pipeline.add_step(NumToStrFormat())
         return self
     
+    def add_date_format(self) -> 'PipelineBuilder':
+        self.pipeline.add_step(DateFormat())
+        return self 
         
-    
     def build(self) -> Pipeline:
         return self.pipeline

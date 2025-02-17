@@ -6,6 +6,7 @@ sys.path.append(str(project_root))
 from src.data_foundation.data_pipeline.pipeline import Pipeline
 
 from src.data_foundation.data_ingestion.csv_extractor import CsvExtractor
+from src.data_foundation.data_formatting.df_creator import DataFrameCreator
 
 
 class PipelineBuilder:
@@ -16,6 +17,10 @@ class PipelineBuilder:
     
     def add_csv_extractor(self) -> 'PipelineBuilder':
         self.pipeline.add_step(CsvExtractor())
+        return self
+    
+    def add_df_creator(self) -> 'PipelineBuilder':
+        self.pipeline.add_step(DataFrameCreator())
         return self
         
     

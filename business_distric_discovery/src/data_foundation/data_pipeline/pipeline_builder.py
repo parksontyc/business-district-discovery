@@ -9,6 +9,7 @@ from src.data_foundation.data_ingestion.csv_extractor import CsvExtractor
 from src.data_foundation.data_formatting.df_creator import DataFrameCreator
 from src.data_foundation.data_formatting.type_converter import NumToStrFormat
 from src.data_foundation.data_formatting.type_converter import DateFormat
+from src.data_foundation.data_formatting.addr_full_to_half import AddrFullToHalf
 
 
 class PipelineBuilder:
@@ -31,7 +32,11 @@ class PipelineBuilder:
     
     def add_date_format(self) -> 'PipelineBuilder':
         self.pipeline.add_step(DateFormat())
-        return self 
+        return self
+    
+    def add_addr_full_to_half(self, output_column: str) -> 'PipelineBuilder':
+        self.pipeline.add_step(AddrFullToHalf(output_column=output_column))
+        return self
         
     def build(self) -> Pipeline:
         return self.pipeline

@@ -119,7 +119,7 @@ class CsvExtractor(Step):
                     # 更新進度條
                     pbar.update(len(chunk))
             
-            print('\nExtraction completed successfully')
+            # print('\nExtraction completed successfully')
             return extract_list
             
         except FileNotFoundError as e:

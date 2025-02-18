@@ -42,7 +42,8 @@ class AddressSplitter(Step):
     EXEMPT_ENDINGS = (
         '地下', '層', '樓', 'B1', ')', '室', '旁', '地', 
         '邊', '園', '公尺', '前', '面', '場', '路', '街', '巷', '段', 'F', '屋', '口',
-        '側', '位', '攤', '棟', '區', '壁', '部', '棚', ']', '房', '櫃', '﹞', '1', '一', '內', '方', '鋪', '市', '庭','類', '分', '舖', '庫', '販', '右', '廊', '處', '外'
+        '側', '位', '攤', '棟', '區', '壁', '部', '棚', ']', '房', '櫃', '﹞', '1', '一', '內', '方', '鋪', '市', '庭','類', '分', '舖', '庫', '販', '右', '廊', '處', '外', '空', '慺','耬',
+        '〕', '份', '半', '絡', '檈', '物', '間', '廳', '商', '〉', '後', '門', '樓`', '編', '院', '二', '摟', '橋', '等', '臨', '熡', '屢', '角', '下', '﹚', '牌', '近', '左', '>', '}', '厝', '址'
     )
     
     def __init__(self):
@@ -59,7 +60,7 @@ class AddressSplitter(Step):
 
         exempt_endings = '|'.join(map(re.escape, self.EXEMPT_ENDINGS))
         self.exempt_endings_pattern = re.compile(
-            f"({exempt_endings}|之\\d+|號-\\d+|號\\d+|[A-Za-z]\\d+|樓-\\d+|樓\\d+|[A-Za-z]|附\\d+|位\\d+)$"
+            f"({exempt_endings}|之\\d+|號-\\d+|號\\d+|[A-Za-z]\\d+|樓-\\d+|樓\\d+|[A-Za-z]|附\\d+|位\\d+|層-\\d+|編號\\d+|層\\d+|編號\\d+)$"     
         )
 
         # 重置變更追蹤
@@ -116,7 +117,7 @@ class AddressSplitter(Step):
             change_record.changes_made.append('補充號')
 
         # 檢查是否為"號+數字"結尾
-        if re.search(r'號\d+$', addr) and not addr.endswith('樓'):
+        if re.search(r'(?<!攤)號\d+$', addr) and not addr.endswith('樓'):
             addr += '樓'
             change_record.modified = addr
             change_record.changes_made.append('補充樓')

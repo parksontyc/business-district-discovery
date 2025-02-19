@@ -65,7 +65,7 @@ class DataProcessingSystem:
                 return False
             
             # 處理第一個版本
-            
+            print(f'處理 {version1} 版本資料...')
             data1 = (PipelineBuilder(str(file_path1))
                     .add_csv_extractor()
                     .add_df_creator()
@@ -78,7 +78,7 @@ class DataProcessingSystem:
                     .execute())
             
             # 處理第二個版本
-            print(f'Version : {version2}')
+            print(f'處理 {version2} 版本資料...')
             data2 = (PipelineBuilder(str(file_path2))
                     .add_csv_extractor()
                     .add_df_creator()
@@ -91,12 +91,11 @@ class DataProcessingSystem:
                     .execute())
             
             # 比較資料
-            comparison = DataComparison()
-            data = {
+            
+            base_data = self.comparison.process({
                 'base_df': data1,
                 'adj_df': data2
-            }
-            base_data = self.comparison.process(data)
+            })
             
             # 建立輸出目錄
             output_dir = self.project_root / 'data' / 'output'
@@ -107,8 +106,8 @@ class DataProcessingSystem:
             base_data.to_pickle(str(output_path))
             
             logging.info("基準資料初始化完成")
-            # 顯示統計資訊
-            self.comparison.display_statistics()  # 新增: 顯示統計資訊
+            print(f"\n{version1} 和 {version2} 版本比較結果:")
+            self.comparison.display_statistics()
             return True
             
         except Exception as e:
@@ -139,7 +138,7 @@ class DataProcessingSystem:
             base_data = pd.read_pickle(str(base_path))
             
             # 處理新版本資料
-            
+            print(f'處理 {version} 版本資料...')
             new_data = (PipelineBuilder(str(new_file_path))
                       .add_csv_extractor()
                       .add_df_creator()
@@ -152,18 +151,21 @@ class DataProcessingSystem:
                       .execute())
             
             # 比較並更新資料
-            comparison = DataComparison()
-            data = {
+            updated_base = self.comparison.process({
                 'base_df': base_data,
                 'adj_df': new_data
-            }
-            updated_base = comparison.process(data)
+            })
+
+            
             
             # 儲存更新後的基準資料
             updated_base.to_pickle(str(base_path))
             
             logging.info("基準資料更新完成")
+            print(f"\n{version} 版本更新比較結果:")
+            self.comparison.display_statistics()
             return True
+            
             
         except Exception as e:
             logging.error(f"更新基準資料失敗: {str(e)}")

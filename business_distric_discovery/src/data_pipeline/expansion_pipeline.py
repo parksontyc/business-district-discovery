@@ -18,7 +18,8 @@ class DataExpansionPipeline:
     """處理 DataFrame 的 Pipeline"""
     STEP_NAMES = {
         'CityTownStrip': '縣市行政區擷取',
-        # 可以加入其他 DataFrame 處理步驟的名稱
+        'BizIDCategoryClassifier':'行業代號分類',
+        'DateProcessor':'設立日期轉換'
     }
     
     def __init__(self, df: pd.DataFrame):

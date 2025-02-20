@@ -10,6 +10,7 @@ import pandas as pd
 from src.data_enrichment.expansion.data_expansion import CityTownStrip
 from src.data_enrichment.expansion.data_expansion import BizIDCategoryClassifier
 from src.data_enrichment.expansion.data_expansion import DateProcessor
+from src.data_enrichment.expansion.data_expansion import ChainIdentifier
 
 from src.utils.biz_id_category import MajorCategory, MediumCategory, DetailedSubcategory, Subcategory
 
@@ -38,11 +39,14 @@ class DataExpansionPipelineBuilder:
     def add_date_processor(self, **kwargs) -> 'DataExpansionPipelineBuilder':
         """
         添加日期處理器
-        
         Args:
             **kwargs: 傳遞給DateProcessor的參數
         """
         self.pipeline.add_step(DateProcessor(**kwargs))
+        return self
+    
+    def add_chain_identifier(self) -> 'DataExpansionPipelineBuilder':
+        self.pipeline.add_step(ChainIdentifier())
         return self
         
     def build(self) -> DataExpansionPipeline:

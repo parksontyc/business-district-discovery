@@ -19,7 +19,8 @@ class DataExpansionPipeline:
     STEP_NAMES = {
         'CityTownStrip': '縣市行政區擷取',
         'BizIDCategoryClassifier':'行業代號分類',
-        'DateProcessor':'設立日期轉換'
+        'DateProcessor':'設立日期轉換',
+        'ChainIdentifier': "連鎖/非連鎖"
     }
     
     def __init__(self, df: pd.DataFrame):

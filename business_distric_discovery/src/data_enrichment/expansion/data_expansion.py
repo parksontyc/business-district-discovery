@@ -239,3 +239,18 @@ class DateProcessor(Step):
             
         except Exception as e:
             raise ValueError(f"日期處理失敗：{str(e)}")
+        
+
+
+class ChainIdentifier(Step):
+    def __init__(self):
+        super().__init__()
+        
+    def process(self, df: pd.DataFrame):
+        # 根據「總機構統一編號」出現次數決定「型態」欄位
+        df['營業型態'] = np.where(
+            df.groupby('總機構統一編號')['總機構統一編號'].transform('count') >= 2,
+            '連鎖',
+            '非連鎖'
+        )
+        return df

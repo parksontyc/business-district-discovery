@@ -158,8 +158,9 @@ class DataProcessingSystem:
 
             
             
-            # 儲存更新後的基準資料
+            print(f'儲存更新基準資料')
             updated_base.to_pickle(str(base_path))
+            updated_base.to_csv(str(self.project_root / 'data' / 'processed'/'BusinessRegistration_base.csv'))
             
             logging.info("基準資料更新完成")
             print(f"\n{version} 版本更新比較結果:")
